@@ -37,10 +37,12 @@ var HEADERS = ['Timestamp', 'Name', 'Email', 'Company', 'Subject', 'Message'];
 // Must match FS_CONTACT_TOKEN in contact.html. Change both together.
 var SHARED_TOKEN = 'fs_2f8Kqve9Lm3xZ7wpRt6Ncb1';
 
-// reCAPTCHA v3 SECRET key. Keep this PRIVATE — it lives only here, never on
-// the website. Paste your secret key to turn reCAPTCHA on. Leave the
-// placeholder and reCAPTCHA verification is simply skipped.
-var RECAPTCHA_SECRET = 'PASTE_YOUR_RECAPTCHA_SECRET_KEY_HERE';
+// reCAPTCHA v3 SECRET key is read from Script Properties so it never lives in
+// this file or the repo. Set it in the editor under:
+//   Project Settings (gear) ▸ Script Properties ▸ add property
+//   name: recaptcha_secret_key   value: <your secret key>
+// If the property is missing/empty, reCAPTCHA verification is simply skipped.
+var RECAPTCHA_PROP = 'recaptcha_secret_key';
 
 // Submissions scoring below this (0.0 = bot, 1.0 = human) are rejected.
 // 0.5 is Google's suggested starting point.
@@ -70,8 +72,11 @@ function doPost(e) {
     }
 
     // reCAPTCHA v3: verify the token with Google (skipped if not configured).
-    if (!verifyRecaptcha_(data.recaptchaToken)) {
-      return jsonOutput({ ok: false, error: 'recaptcha' });
+    var rc = verifyRecaptcha_(data.recaptchaToken);
+    if (!rc.ok) {
+      // `detail` is temporary — it surfaces WHY it failed so we can debug.
+      // Remove `detail: rc` once the form is working.
+      return jsonOutput({ ok: false, error: 'recaptcha', detail: rc });
     }
 
     var sheet = getSheet_();
@@ -96,25 +101,41 @@ function doPost(e) {
 // should be allowed through. If no secret key is configured, verification
 // is skipped (returns true) so the form keeps working without reCAPTCHA.
 function verifyRecaptcha_(token) {
-  if (!RECAPTCHA_SECRET || RECAPTCHA_SECRET.indexOf('PASTE_') === 0) {
-    return true; // reCAPTCHA not set up yet — don't block submissions.
+  var secret = PropertiesService.getScriptProperties().getProperty(RECAPTCHA_PROP);
+  if (!secret) {
+    return { ok: true, skipped: true }; // reCAPTCHA not set up yet — allow.
   }
   if (!token) {
-    return false; // reCAPTCHA is on but the page sent no token.
+    return { ok: false, reason: 'no-token-from-page' };
   }
   try {
     var resp = UrlFetchApp.fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'post',
-      payload: { secret: RECAPTCHA_SECRET, response: token },
+      payload: { secret: secret, response: token },
       muteHttpExceptions: true
     });
     var result = JSON.parse(resp.getContentText());
     // v3 returns success + a score (0.0–1.0). Require both.
-    return result.success === true &&
-           (typeof result.score !== 'number' || result.score >= RECAPTCHA_MIN_SCORE);
+    var pass = result.success === true &&
+               (typeof result.score !== 'number' || result.score >= RECAPTCHA_MIN_SCORE);
+    return {
+      ok: pass,
+      success: result.success,
+      score: result.score,
+      action: result.action,
+      errors: result['error-codes']
+    };
   } catch (err) {
-    return false; // On any verification error, fail closed.
+    return { ok: false, reason: String(err) };
   }
+}
+
+// Run this ONCE from the editor (select "authorize" in the function dropdown
+// and click Run) to grant the permissions the script needs — including the
+// external-request permission used to verify reCAPTCHA. Approve the prompts.
+function authorize() {
+  SpreadsheetApp.getActiveSpreadsheet().getName();
+  UrlFetchApp.fetch('https://www.google.com/recaptcha/api/siteverify', { muteHttpExceptions: true });
 }
 
 // Friendly response if someone opens the URL in a browser (GET).
