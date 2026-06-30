@@ -30,6 +30,22 @@ var SHEET_NAME = 'Submissions';
 // Column order written to the sheet. Header row is added automatically.
 var HEADERS = ['Timestamp', 'Name', 'Email', 'Company', 'Subject', 'Message'];
 
+// Shared token: the website sends this in every submission and we reject
+// anything without it. This blocks generic bots that blast random /exec
+// URLs (they won't have it). It is NOT secret from a determined attacker —
+// it lives in the public site JS — so it's a filter, not real auth.
+// Must match FS_CONTACT_TOKEN in contact.html. Change both together.
+var SHARED_TOKEN = 'fs_2f8Kqve9Lm3xZ7wpRt6Ncb1';
+
+// reCAPTCHA v3 SECRET key. Keep this PRIVATE — it lives only here, never on
+// the website. Paste your secret key to turn reCAPTCHA on. Leave the
+// placeholder and reCAPTCHA verification is simply skipped.
+var RECAPTCHA_SECRET = 'PASTE_YOUR_RECAPTCHA_SECRET_KEY_HERE';
+
+// Submissions scoring below this (0.0 = bot, 1.0 = human) are rejected.
+// 0.5 is Google's suggested starting point.
+var RECAPTCHA_MIN_SCORE = 0.5;
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
@@ -41,10 +57,21 @@ function doPost(e) {
       data = JSON.parse(e.postData.contents);
     }
 
+    // Shared-token check: drop anything that didn't come from our site JS.
+    // Pretend success so a prober can't tell the token was wrong.
+    if (data.token !== SHARED_TOKEN) {
+      return jsonOutput({ ok: true });
+    }
+
     // Honeypot: real users never fill the hidden "website" field.
     // Pretend success so bots don't retry.
     if (data.website) {
       return jsonOutput({ ok: true });
+    }
+
+    // reCAPTCHA v3: verify the token with Google (skipped if not configured).
+    if (!verifyRecaptcha_(data.recaptchaToken)) {
+      return jsonOutput({ ok: false, error: 'recaptcha' });
     }
 
     var sheet = getSheet_();
@@ -62,6 +89,31 @@ function doPost(e) {
     return jsonOutput({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
+  }
+}
+
+// Verify a reCAPTCHA v3 token with Google. Returns true if the request
+// should be allowed through. If no secret key is configured, verification
+// is skipped (returns true) so the form keeps working without reCAPTCHA.
+function verifyRecaptcha_(token) {
+  if (!RECAPTCHA_SECRET || RECAPTCHA_SECRET.indexOf('PASTE_') === 0) {
+    return true; // reCAPTCHA not set up yet — don't block submissions.
+  }
+  if (!token) {
+    return false; // reCAPTCHA is on but the page sent no token.
+  }
+  try {
+    var resp = UrlFetchApp.fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'post',
+      payload: { secret: RECAPTCHA_SECRET, response: token },
+      muteHttpExceptions: true
+    });
+    var result = JSON.parse(resp.getContentText());
+    // v3 returns success + a score (0.0–1.0). Require both.
+    return result.success === true &&
+           (typeof result.score !== 'number' || result.score >= RECAPTCHA_MIN_SCORE);
+  } catch (err) {
+    return false; // On any verification error, fail closed.
   }
 }
 
