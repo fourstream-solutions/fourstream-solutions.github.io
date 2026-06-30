@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-brand">
                     <img src="assets/imgs/logo.png" alt="${COMPANY}" style="max-height: 44px; width: auto;" />
-                    <p class="mb-0" style="max-width: 320px;">Software, automation and data solutions that help businesses work smarter — from custom tools and dashboards to automated Google Sheets &amp; Apps Script pipelines.</p>
+                    <p class="mb-0" style="max-width: 320px;">Software, AI, automation and data solutions that help businesses work smarter — from custom tools and dashboards to AI integrations and automated Google Sheets &amp; Apps Script pipelines.</p>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6">
                     <h5>Company</h5>
@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="col-lg-3 col-md-3 col-6">
                     <h5>Services</h5>
                     <ul class="footer-list">
+                        <li><a href="services.html">AI Integration &amp; Automation</a></li>
                         <li><a href="services.html">Software Development</a></li>
                         <li><a href="services.html">Websites &amp; Web Apps</a></li>
                         <li><a href="services.html">Dashboards &amp; Analytics</a></li>
