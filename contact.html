@@ -3,31 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Contact — Fourstream Solutions</title>
+    <meta name="description" content="Get in touch with Fourstream Solutions about software, websites, dashboards and automation projects.">
+    <link rel="icon" href="assets/imgs/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/script.js" defer></script>
 </head>
-<body>
+<body data-title="Contact">
     <div id="navbar"></div>
-    <div class="container mt-5">
-        <h1>Contact Us Will be Activated Later</h1>
-        <form>
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name">
+
+    <main>
+        <!-- Page header -->
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="section-label" style="color:#7fb3ff;">Contact</div>
+                        <h1>Let's talk about your project.</h1>
+                        <p>Tell us what you're trying to build or automate. We'll get back to you with next steps.</p>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email">
+        </header>
+
+        <section class="section">
+            <div class="container">
+                <div class="row g-5">
+                    <!-- Contact details -->
+                    <div class="col-lg-5">
+                        <div class="section-label">Get in touch</div>
+                        <h2 class="mb-4">We'd love to hear from you</h2>
+
+                        <div class="contact-detail">
+                            <div class="fs-icon">✉️</div>
+                            <div>
+                                <div class="label">Email</div>
+                                <div class="value"><a href="mailto:contact@fourstream.in">contact@fourstream.in</a></div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail">
+                            <div class="fs-icon">🌐</div>
+                            <div>
+                                <div class="label">Website</div>
+                                <div class="value"><a href="https://www.fourstream.in">www.fourstream.in</a></div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail">
+                            <div class="fs-icon">💬</div>
+                            <div>
+                                <div class="label">What to expect</div>
+                                <div class="value">Share a few details about your goal and we'll suggest the simplest way to get there.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form -->
+                    <div class="col-lg-7">
+                        <div class="form-card">
+                            <!-- NOTE: form submission is intentionally disabled for now.
+                                 Backend (Apps Script / Google Form push) will be wired up later. -->
+                            <form id="contactForm" onsubmit="return false;">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Your name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="company" class="form-label">Company <span class="text-muted fw-normal">(optional)</span></label>
+                                        <input type="text" class="form-control" id="company" placeholder="Your company">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="subject" class="form-label">What can we help with?</label>
+                                        <select class="form-control" id="subject">
+                                            <option selected disabled value="">Select a service…</option>
+                                            <option>Software / company tool</option>
+                                            <option>Website or web app</option>
+                                            <option>Dashboard &amp; analytics</option>
+                                            <option>Google Sheets / Apps Script automation</option>
+                                            <option>Workflow automation</option>
+                                            <option>Analysis &amp; consulting</option>
+                                            <option>Something else</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" placeholder="Tell us a little about your project or the work you'd like to automate…"></textarea>
+                                    </div>
+                                    <div class="col-md-12 d-flex flex-wrap align-items-center gap-3">
+                                        <!-- Button is inert for now; submission will be added later. -->
+                                        <button type="submit" class="btn btn-fs" disabled>Send message</button>
+                                        <span class="text-muted small">Online form coming soon — for now, email us at
+                                            <a href="mailto:contact@fourstream.in">contact@fourstream.in</a>.</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
