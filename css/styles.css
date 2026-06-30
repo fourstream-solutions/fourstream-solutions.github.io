@@ -4,19 +4,22 @@
    =========================================================== */
 
 :root {
-    --fs-navy: #0b1f3a;
-    --fs-navy-soft: #13294b;
-    --fs-blue: #1d6fe0;
-    --fs-blue-dark: #1558b8;
-    --fs-cyan: #21c8d8;
-    --fs-ink: #1b2330;
-    --fs-muted: #5b6675;
-    --fs-line: #e6e9ef;
-    --fs-bg: #f6f8fc;
+    /* Brand palette — matched to the logo: red, black, white. */
+    --fs-dark: #161618;        /* near-black (logo squares) — dark sections */
+    --fs-dark-soft: #232327;   /* slightly lifted dark */
+    --fs-red: #c0392b;         /* softened brand red (logo is brighter) — accent */
+    --fs-red-dark: #9c2b20;    /* deeper red — hover/active */
+    --fs-red-2: #cf5346;       /* muted lighter red */
+    --fs-red-soft: rgba(192, 57, 43, 0.09); /* faint tint — icon chips, surfaces */
+    --fs-ink: #2a2a2e;         /* charcoal body/heading text (logo text) */
+    --fs-muted: #6b6b72;
+    --fs-line: #e7e7ea;
+    --fs-bg: #f7f7f8;
     --fs-radius: 14px;
-    --fs-shadow: 0 10px 30px rgba(11, 31, 58, 0.08);
-    --fs-shadow-sm: 0 4px 14px rgba(11, 31, 58, 0.06);
-    --fs-gradient: linear-gradient(135deg, var(--fs-blue) 0%, var(--fs-cyan) 100%);
+    --fs-shadow: 0 10px 30px rgba(22, 22, 24, 0.10);
+    --fs-shadow-sm: 0 4px 14px rgba(22, 22, 24, 0.07);
+    /* Tonal gradient (red → deep red), not a bright two-hue blend. */
+    --fs-gradient: linear-gradient(135deg, var(--fs-red) 0%, var(--fs-red-dark) 100%);
 }
 
 /* ---------- Base ---------- */
@@ -39,10 +42,10 @@ body {
 
 main { flex: 1 0 auto; }
 
-a { color: var(--fs-blue); text-decoration: none; }
-a:hover { color: var(--fs-blue-dark); text-decoration: underline; }
+a { color: var(--fs-red); text-decoration: none; }
+a:hover { color: var(--fs-red-dark); text-decoration: underline; }
 
-h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
+h1, h2, h3, h4 { color: var(--fs-dark); font-weight: 700; line-height: 1.2; }
 
 .section { padding: 72px 0; }
 .section-tight { padding: 48px 0; }
@@ -53,7 +56,7 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     letter-spacing: 0.12em;
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--fs-blue);
+    color: var(--fs-red);
     margin-bottom: 0.5rem;
 }
 
@@ -76,8 +79,8 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     padding: 0.5rem 0.9rem !important;
     border-radius: 8px;
 }
-.navbar .nav-link:hover { color: var(--fs-blue); background: var(--fs-bg); }
-.navbar .nav-link.active { color: var(--fs-blue); font-weight: 700; }
+.navbar .nav-link:hover { color: var(--fs-red); background: var(--fs-bg); }
+.navbar .nav-link.active { color: var(--fs-red); font-weight: 700; }
 
 /* ---------- Buttons ---------- */
 .btn-fs {
@@ -94,31 +97,42 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
 
 .btn-fs-outline {
     background: transparent;
-    color: var(--fs-navy);
+    color: var(--fs-dark);
     border: 1.5px solid var(--fs-line);
     font-weight: 600;
     padding: 0.65rem 1.5rem;
     border-radius: 10px;
     transition: border-color 0.15s ease, color 0.15s ease;
 }
-.btn-fs-outline:hover { color: var(--fs-blue); border-color: var(--fs-blue); }
+.btn-fs-outline:hover { color: var(--fs-red); border-color: var(--fs-red); }
+
+/* On dark backgrounds (hero), use a light outline so it stays visible. */
+.hero .btn-fs-outline {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+.hero .btn-fs-outline:hover {
+    color: #fff;
+    background: var(--fs-red);
+    border-color: var(--fs-red);
+}
 
 /* ---------- Hero ---------- */
 .hero {
     position: relative;
-    color: #eaf2ff;
-    background: radial-gradient(1200px 500px at 10% -10%, rgba(33, 200, 216, 0.25), transparent 60%),
-                linear-gradient(160deg, var(--fs-navy) 0%, var(--fs-navy-soft) 60%, #0e2647 100%);
+    color: #f0eded;
+    background: radial-gradient(1100px 480px at 12% -10%, rgba(192, 57, 43, 0.22), transparent 62%),
+                linear-gradient(160deg, var(--fs-dark) 0%, var(--fs-dark-soft) 60%, #241516 100%);
     padding: 96px 0 88px;
     overflow: hidden;
 }
 .hero h1 { color: #fff; font-size: clamp(2rem, 4.5vw, 3.4rem); margin-bottom: 1rem; }
-.hero p { color: #c2d2ea; font-size: 1.2rem; max-width: 640px; }
+.hero p { color: #d6d2d2; font-size: 1.2rem; max-width: 640px; }
 .hero .eyebrow {
     display: inline-block;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    color: #cfe2ff;
+    color: #ffd2cb;
     padding: 0.35rem 0.9rem;
     border-radius: 999px;
     font-size: 0.85rem;
@@ -129,12 +143,12 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
 
 /* Page header (inner pages) */
 .page-header {
-    background: linear-gradient(160deg, var(--fs-navy) 0%, var(--fs-navy-soft) 100%);
+    background: linear-gradient(160deg, var(--fs-dark) 0%, var(--fs-dark-soft) 100%);
     color: #fff;
     padding: 64px 0;
 }
 .page-header h1 { color: #fff; }
-.page-header p { color: #c2d2ea; margin-bottom: 0; max-width: 680px; }
+.page-header p { color: #d6d2d2; margin-bottom: 0; max-width: 680px; }
 
 /* ---------- Cards ---------- */
 .fs-card {
@@ -161,9 +175,10 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: var(--fs-gradient);
-    color: #fff;
-    font-size: 1.4rem;
+    background: var(--fs-red-soft);
+    border: 1px solid rgba(192, 57, 43, 0.16);
+    color: var(--fs-red);
+    font-size: 1.3rem;
     margin-bottom: 1rem;
 }
 
@@ -171,7 +186,7 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
 .stat-num {
     font-size: 2.2rem;
     font-weight: 800;
-    color: var(--fs-blue);
+    color: var(--fs-red);
     line-height: 1;
 }
 .stat-label { color: var(--fs-muted); font-size: 0.95rem; }
@@ -195,17 +210,29 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     justify-content: center;
 }
 
-/* CTA band */
+/* CTA band — soft tinted surface, not a bright red block. */
 .cta-band {
-    background: var(--fs-gradient);
-    color: #fff;
+    background: #f9efed;
+    border: 1px solid #f0ddd8;
+    border-left: 4px solid var(--fs-red);
+    color: var(--fs-ink);
     border-radius: 18px;
-    padding: 48px;
-    box-shadow: var(--fs-shadow);
+    padding: 44px 48px;
+    box-shadow: var(--fs-shadow-sm);
 }
-.cta-band h2 { color: #fff; }
-.cta-band p { color: rgba(255, 255, 255, 0.9); margin-bottom: 0; }
-.cta-band .btn-fs-outline { background: #fff; border-color: #fff; color: var(--fs-blue-dark); }
+.cta-band h2 { color: var(--fs-dark); }
+.cta-band p { color: var(--fs-muted); margin-bottom: 0; }
+/* Clear red action button on the soft band. */
+.cta-band .btn-fs-outline {
+    background: var(--fs-red);
+    border-color: var(--fs-red);
+    color: #fff;
+}
+.cta-band .btn-fs-outline:hover {
+    background: var(--fs-red-dark);
+    border-color: var(--fs-red-dark);
+    color: #fff;
+}
 
 /* ---------- Forms ---------- */
 .form-card {
@@ -215,15 +242,15 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     padding: 32px;
     box-shadow: var(--fs-shadow-sm);
 }
-.form-label { font-weight: 600; color: var(--fs-navy); }
+.form-label { font-weight: 600; color: var(--fs-dark); }
 .form-control {
     border-radius: 10px;
     border: 1.5px solid var(--fs-line);
     padding: 0.7rem 0.9rem;
 }
 .form-control:focus {
-    border-color: var(--fs-blue);
-    box-shadow: 0 0 0 0.2rem rgba(29, 111, 224, 0.12);
+    border-color: var(--fs-red);
+    box-shadow: 0 0 0 0.2rem rgba(192, 57, 43, 0.15);
 }
 
 .contact-detail {
@@ -233,12 +260,12 @@ h1, h2, h3, h4 { color: var(--fs-navy); font-weight: 700; line-height: 1.2; }
     margin-bottom: 1.4rem;
 }
 .contact-detail .fs-icon { width: 44px; height: 44px; font-size: 1.1rem; margin-bottom: 0; flex: 0 0 auto; }
-.contact-detail .label { font-weight: 700; color: var(--fs-navy); }
+.contact-detail .label { font-weight: 700; color: var(--fs-dark); }
 .contact-detail .value { color: var(--fs-muted); }
 
 /* ---------- Footer ---------- */
 .site-footer {
-    background: var(--fs-navy);
+    background: var(--fs-dark);
     color: #b7c4da;
     padding: 56px 0 24px;
     flex-shrink: 0;
