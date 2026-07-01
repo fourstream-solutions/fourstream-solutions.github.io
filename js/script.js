@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { href: '/', label: 'Home' },
         { href: '/about/', label: 'About' },
         { href: '/services/', label: 'Services' },
+        { href: '/work/', label: 'Work' },
         { href: '/contact/', label: 'Contact' }
     ];
 
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <li><a href="/">Home</a></li>
                         <li><a href="/about/">About</a></li>
                         <li><a href="/services/">Services</a></li>
+                        <li><a href="/work/">Work</a></li>
                         <li><a href="/contact/">Contact</a></li>
                     </ul>
                 </div>
